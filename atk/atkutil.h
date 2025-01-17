@@ -329,8 +329,8 @@ const gchar *atk_get_version (void);
   GType                                                                                    \
       type_name##_get_type (void)                                                          \
   {                                                                                        \
-    static volatile gsize g_define_type_id__volatile = 0;                                  \
-    if (g_once_init_enter (&g_define_type_id__volatile))                                   \
+    static volatile GType g_define_type_id__volatile = 0;                                  \
+    if (g_once_init_enter_pointer (&g_define_type_id__volatile))                           \
       {                                                                                    \
         AtkObjectFactory *factory;                                                         \
         GType derived_type;                                                                \
@@ -354,12 +354,12 @@ const gchar *atk_get_version (void);
                                            (GInstanceInitFunc) type_name##_init,           \
                                            (GTypeFlags) flags);                            \
         { /* custom code follows */
-#define _ATK_DEFINE_TYPE_EXTENDED_END()                              \
-  /* following custom code */                                        \
-  }                                                                  \
-  g_once_init_leave (&g_define_type_id__volatile, g_define_type_id); \
-  }                                                                  \
-  return g_define_type_id__volatile;                                 \
+#define _ATK_DEFINE_TYPE_EXTENDED_END()                                      \
+  /* following custom code */                                                \
+  }                                                                          \
+  g_once_init_leave_pointer (&g_define_type_id__volatile, g_define_type_id); \
+  }                                                                          \
+  return g_define_type_id__volatile;                                         \
   } /* closes type_name##_get_type() */
 
 G_END_DECLS
